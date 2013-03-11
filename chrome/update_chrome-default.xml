@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
+  <app appid='%%CHROME_APP_ID%%'>
+    <updatecheck codebase='http://geobib.fr/bibdix/versions/%%APP_CODE%%/bibdix_chrome_%%APP_CODE%%_%%APP_VERSION%%.crx' version='%%APP_VERSION%%' />
+  </app>
+</gupdate>

@@ -1,0 +1,48 @@
+{
+	"name": "%%APP_NAME%%",
+	"version": "%%APP_VERSION%%",
+	"manifest_version": 2,
+	"description": "%%APP_DESCRIPTION%%",
+	"icons":
+	{
+		"48" : "data/img/icon.png",
+		"128" : "data/img/icon.png"
+	},
+	"web_accessible_resources" :
+	[
+		"data/img/*"
+	],
+	"content_scripts":
+	[
+		{
+			"matches":
+			[
+				"http://*.appeldulivre.fr/*",
+				"http://*.amazon.fr/*",
+				"http://*.decitre.fr/*",
+				"http://*.electre.com/*",
+				"http://*.fnac.com/*",
+				"http://*.mollat.com/*"
+			],
+			"js" :
+			[
+				
+				"data/lib/jquery-1.9.1.min.js",
+				"data/config.js",
+				"data/modules/Amazon.js",
+				"data/modules/AppelDuLivre.js",
+				"data/modules/Decitre.js",
+				"data/modules/Electre.js",
+				"data/modules/Fnac.js",
+				"data/modules/Mollat.js",
+				"data/Utils.js",
+				"data/Dispatcher.js"
+			]
+		}
+	],
+	"permissions" :
+	[
+		"http://www.geobib.fr/*"
+	],
+	"update_url": "https://ssl2.ovh.net/~opensour/bibdix/check_for_updates.php?app_code=%%APP_CODE%%&browser=chrome"
+}

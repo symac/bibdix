@@ -1,0 +1,19 @@
+{
+  "fullName": "%%APP_NAME%%",
+  "version": "%%APP_VERSION%%",
+  "description": "%%APP_DESCRIPTION%%",
+  "id": "bibdix_%%APP_CODE%%",
+  "contributors": [],
+  "author": "Sylvain Machefert",
+  "homage": "http://www.geobib.fr/bibdix",
+  "url": "",
+  "name": "bibdix-%%APP_CODE%%",
+  "dependencies":
+  [
+    "api-utils",
+    "addon-kit"],
+  "lib": "lib",
+  "main": "main",
+  "icon": "data/img/icon.png",
+  "icon64": "data/img/icon.png"
+}
