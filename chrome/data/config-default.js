@@ -11,6 +11,7 @@ exports.URL_REBOND = {};
 /***************************/
 // Lister l'ensemble des RCR concernés en les séparant par une virgule.
 exports.RCR = "%%APP_RCR%%";
+exports.DASHES = %%APP_DASHES%%;
 
 /********************************/
 /* Rebonds vers catalogue local */

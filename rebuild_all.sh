@@ -33,7 +33,9 @@ APP_DESCRIPTION=$(awk -F '=' '/APP_DESCRIPTION/ {print $2}' $config_file)
 APP_URL_0=$(grep "APP_URL_0" $config_file | cut -d= -f2-)
 APP_URL_1=$(grep "APP_URL_1" $config_file | cut -d= -f2-)
 APP_URL_2=$(grep "APP_URL_2" $config_file | cut -d= -f2-)
+
 APP_RCR=$(awk -F '=' '/APP_RCR/ {print $2}' $config_file)
+APP_DASHES=$(awk -F '=' '/APP_DASHES/ {print $2}' $config_file)
 
 APP_ICONS_HEIGHT=$(awk -F '=' '/APP_ICONS_HEIGHT/ {print $2}' $config_file)
 APP_ICONS_WIDTH=$(awk -F '=' '/APP_ICONS_WIDTH/ {print $2}' $config_file)
@@ -55,7 +57,7 @@ then
   rm firefox/lib/config.js
 fi
 
-./01_commun_update_config.sh "$APP_RCR" "$APP_URL_0" "$APP_URL_1" "$APP_URL_2" "$APP_NAME" "$APP_ICONS_HEIGHT" "$APP_ICONS_WIDTH"
+./01_commun_update_config.sh "$APP_RCR" "$APP_URL_0" "$APP_URL_1" "$APP_URL_2" "$APP_NAME" "$APP_ICONS_HEIGHT" "$APP_ICONS_WIDTH" "$APP_DASHES"
 
 # 2. On va copier les images de l'extension qu'on est en train de reconstruire
 for image in {"absent.png","inconnu.png","present.png","icon.png","icon_inactif.png","icon_actif.png"}; do

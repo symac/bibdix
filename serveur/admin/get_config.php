@@ -37,7 +37,7 @@
     
   }
   
-
+  print "APP_DASHES=".$row["dashes"]."\n\n";
   print "APP_RCR=".$row["rcr"]."\n\n";
   
   print "CHROME_APP_ID=".$row["chrome_app_id"]."\n";
