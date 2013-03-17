@@ -103,7 +103,7 @@ then
     tr '0-9a-f' 'a-p')
 
     # On va mettre à jour le chrome_id sur le serveur pour le récupérer plus tard
-    echo http://www.geobib.fr/bibdix/admin/update_keys?app_code="$APP_CODE"\&app_chrome_id="$CHROME_APP_ID"
+
     wget --quiet http://www.geobib.fr/bibdix/admin/update_keys?app_code="$APP_CODE"\&app_chrome_id="$CHROME_APP_ID"
 else
     if [ -e chrome.pem ]
@@ -133,6 +133,8 @@ else
     # On va remettre à jour le fichier de config (pas forcément nécessaire mais permet de partir sur une base propre)
     ./00_get_remote_config.sh $APP_CODE
 fi
+
+rm update_keys*;
 
 # 3. Construction du fichier updates
 ./04_chrome_update_update.sh "$APP_CODE" "$APP_VERSION" "$CHROME_APP_ID"
