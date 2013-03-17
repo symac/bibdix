@@ -42,7 +42,8 @@
 	],
 	"permissions" :
 	[
-		"http://www.geobib.fr/*"
+		"http://www.geobib.fr/*",
+		"http://xisbn.worldcat.org/*"
 	],
 	"update_url": "https://ssl2.ovh.net/~opensour/bibdix/check_for_updates.php?app_code=%%APP_CODE%%&browser=chrome"
 }
