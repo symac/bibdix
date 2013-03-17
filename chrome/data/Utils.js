@@ -131,7 +131,6 @@ function fetchDispo(q, callback) {
         {
           // On a au moins un PPN, on va donc aller demander si dispo dans nos RCR
           var url = "http://www.sudoc.fr/services/multiwhere/" + ppn_list + "&format=text/json";
-          console.log("URL : " + url);
           xhr2.open('GET', url, true);
           xhr2.send();
         }
@@ -258,7 +257,6 @@ function fetchDispo(q, callback) {
       url += "," + isbn2;
     }
     url += "&format=text/json";
-    console.log("URL OK : " + url);
     xhr1.open('GET', url, true);
     xhr1.send();
   }
@@ -406,8 +404,22 @@ function showBookAvailability_onFinish(message) {
     else if (message.data.dispo == 1)
     {
       var url = message.config.URL_REBOND.res1;
-      url = url.replace("{{ISBN}}", message.data.isbn);
-      console.log("URLLLLLLLL : #" + url + "#");
+      var isbn = "";
+      // Si pas de tirets dans l'isbn mais que le catalogue a besoin des isbn, on va les rajouter via worldcat
+      if ( (!(message.data.isbn.indexOf("-") != -1)) && (message.config.DASHES == 1) )
+      {
+        
+        isbn = addDashes(message.data.isbn);
+        console.log("ADD DASHES : " + message.data.isbn + " => " + isbn);
+      }
+      else
+      {
+        isbn = message.data.isbn;
+        console.log("ISBN OK : " + isbn);
+      }
+
+      url = url.replace("{{ISBN}}", isbn);
+      
       $(".bplus" + aQueryClass).html('<a target="_blank" href="' + url +
             '"><img style="width:' + message.config.IMG.width + 'px; height:' + message.config.IMG.height + 'px" class="search-start" src="' + message.config.IMG.present + 
             '" title="Document présent dans vos bibliothèques, suivre le lien pour vérifier qu\'il n\'est pas emprunté" alt="Document présent dans vos bibliothèques, suivre le ' +
@@ -487,4 +499,27 @@ function ISBN13toISBN10(isbn13) {
     }
      
     return start + checkDig;
+}
+
+
+// Fonction qui va ajouter via Worldcat les isbn aux endroits nécessaires
+function addDashes(isbn)
+{
+  // TODO : manage timeout
+  var xhr1 = new XMLHttpRequest();
+  var url = "http://xisbn.worldcat.org/webservices/xid/isbn/" + isbn + "?method=hyphen&format=json";
+  xhr1.open('GET', url, false);
+  xhr1.send(null);
+  if (xhr1.readyState == 4) {
+      if (xhr1.status == 200) {
+        var data_out = JSON.parse(xhr1.responseText);
+        var ppn_list = "";
+        if (data_out["stat"] == "ok")
+        {
+          return data_out["list"][0].isbn[0];
+        }
+        return isbn;
+      }
+    }
+  return isbn;
 }
