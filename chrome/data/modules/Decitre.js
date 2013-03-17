@@ -45,10 +45,9 @@ var Module_Decitre = {
     if (!isbn)
     {
         // TODO : logguer les erreurs pour contrôler un peu mieux
-        console.log("Pas d'ISBN sur cette page");
         return true;
     }
-    isbn = isbn.replace(/\-/g, "");
+    // isbn = isbn.replace(/\-/g, "");
     isbn = isbn.replace(":", "");
     isbn = isbn.replace(/^\s*/, '').replace(/\s*$/, '');
     console.log("ISBN : #" + isbn + "#");

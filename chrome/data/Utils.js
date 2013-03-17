@@ -245,7 +245,7 @@ function fetchDispo(q, callback) {
   if (q.indexOf("isbn:") != 0)
   {
     // On doit aller récupérer l'ISBN, en passant par le serveur bibdix
-    // TODO : utiliser la fonction translateSiteId
+    // TODO : utiliser la fonction translateSiteId, pour Fnac par exemple
   }
   else
   {
@@ -292,27 +292,6 @@ function translateSiteId(q)
   var url = "http://www.geobib.fr/bibeve/getdispo.php?q=" + q + "&rcr=" + exports.RCR;
   xhr.open('GET', url, true);
   xhr.send();  
-}
-
-function fetchDispo_OK(q, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function(data) {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
-        var data_out = JSON.parse(xhr.responseText);
-        data_out.config = exports;
-        console.log(exports);
-        callback(data_out);
-      } else {
-        callback(null);
-      }
-    }
-  }
-  // Note that any URL fetched here must be matched by a permission in
-  // the manifest.json file!
-  var url = "http://www.geobib.fr/bibeve/getdispo.php?q=" + q + "&rcr=" + exports.RCR;
-  xhr.open('GET', url, true);
-  xhr.send();
 }
 
 function getNbRes(aQuery, aInsertionPoint) {
@@ -404,8 +383,8 @@ function showBookAvailability_onFinish(message) {
     var aQueryClass = aQuery;
     aQueryClass = aQueryClass.replace(":", "");
     $(".bplus" + aQueryClass).html('<a target="_blank" href="' + BASE_URL + '/redirect.php?index=1"><img style="width:' + message.config.IMG.width + 'px; height:' + message.config.IMG.height + 'px" class="search-start" src="' + 
-            message.config.IMG.inconnu + '" title="Document présent dans Babord+, suivre le lien pour vérifier qu\'il n\'est pas emprunté" '
-            + ' alt="Document présent dans Babord+, suivre le lien pour vérifier qu\'il n\'est pas emprunté"/></a>');
+            message.config.IMG.inconnu + '" title="Document présent dans vos bibliothèques, suivre le lien pour vérifier qu\'il n\'est pas emprunté" '
+            + ' alt="Document présent dans vos bibliothèques, suivre le lien pour vérifier qu\'il n\'est pas emprunté"/></a>');
   }
   else
   {
@@ -428,9 +407,10 @@ function showBookAvailability_onFinish(message) {
     {
       var url = message.config.URL_REBOND.res1;
       url = url.replace("{{ISBN}}", message.data.isbn);
+      console.log("URLLLLLLLL : #" + url + "#");
       $(".bplus" + aQueryClass).html('<a target="_blank" href="' + url +
             '"><img style="width:' + message.config.IMG.width + 'px; height:' + message.config.IMG.height + 'px" class="search-start" src="' + message.config.IMG.present + 
-            '" title="Document présent dans Babord+, suivre le lien pour vérifier qu\'il n\'est pas emprunté" alt="Document présent dans Babord+, suivre le ' +
+            '" title="Document présent dans vos bibliothèques, suivre le lien pour vérifier qu\'il n\'est pas emprunté" alt="Document présent dans vos bibliothèques, suivre le ' +
             'lien pour vérifier qu\'il n\'est pas emprunté"/></a>')
     }
     else if (message.data.dispo == 2)

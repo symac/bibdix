@@ -10,17 +10,15 @@ exports.URL_REBOND = {};
 /* RCR à prendre en compte */
 /***************************/
 // Lister l'ensemble des RCR concernés en les séparant par une virgule.
-exports.RCR = "330092101,330632101,330632102,330632103,330632201,330632209,330632212,330635106,331672201,331922101,331922302,332812201,333182101,333182102,333182103,333182104,333182201,333182204,333182205,333182207,333182208,333182210,333182211,335222101,335222102,335222103,335222105,335222106,335222107,335222108,335222109,335222110,335222201,335222203,335222205,335222209,335222216,335222221,335222228,335222229,335222230,335222306,335229901,335229904,335229905,335229906,335229907,335502201,400882201,401922201,470012101,470012102,470012202,644452201";
+exports.RCR = "861942252,861942251,861949901,861942250,160152101,791912101,861942108,173002102,861942207,161132101,861942204,860622101,160152201,861942303,861942238,860622201,861942220,861942107,861942212,860622202,861942205,861942201,861942106,861942103,861942102,861942101,791912201";
 
 /********************************/
 /* Rebonds vers catalogue local */
 /********************************/
-// Notice absente de nos bibliothèques
-exports.URL_REBOND.res0 = "http://www.geobib.fr/babordplus/redirect.php?index=1";
+// Notice absente de nos bibliothèques ou bug, on renvoie vers la page d'accueil des bibliothèques
+exports.URL_REBOND.res0 = "http://scd.univ-poitiers.fr/masc/default.asp?INSTANCE=EXPLOITATION";
 // Notice présente dans nos bibliothèques, variable {{ISBN}} à l'endroit adéquat
-exports.URL_REBOND.res1 = "http://www.geobib.fr/babordplus/redirect.php?isbn={{ISBN}}";
-// Cas où l'on ne sait pas ce qui s'est passé, renvoi vers la page d'accueil en général
-exports.URL_REBOND.res2 = "http://www.geobib.fr/babordplus/redirect.php?index=1";
+exports.URL_REBOND.res1 = "http://cataloguescd.univ-poitiers.fr/default.Asp?instance=EXPLOITATION&URL=/ClientBookLine/recherche/executerRechercheprogress.asp%3FbNewSearch%3Dtrue%26strTypeRecherche%3Dpr_multicritere%26cboIndexFormatANY%3Dtouslesmots%26cboOtherIndex%3DISBN%26CodeDocBaseList%3DBU%255FPOITIERS%26CodeDocBaseListAnyDefault_BU_POITIERS%3D%26CodeDocBaseListRestrictionDefault_BU_POITIERS%3D%26BackUrl%3D%252FClientBookLine%252Ftoolkit%252FP%255Frequests%252Fformulaire%252Easp%253FGRILLE%253DSIMPLE2%255F0%2526INSTANCE%253D%26txtOtherIndex%3D{{ISBN}}";
 
 /********************************/
 /* Affichage des disponibilités */
@@ -39,4 +37,4 @@ exports.IMG.actif = chrome.extension.getURL("data/img/present.png");
 exports.IMG.inactif = chrome.extension.getURL("data/img/gris.png");
 
 // Libellés affichés au moment du passage sur l'icône en bas de l'écran
-exports.LIB.extension_toolbar = "Bordeaux 3 - BibdiX";
+exports.LIB.extension_toolbar = "Poitiers - BibdiX";
