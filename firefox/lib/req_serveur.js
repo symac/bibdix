@@ -175,7 +175,16 @@ function getdispo(msg, myworker, config)
                 {
                   jsonResult.data.dispo = 0;
                 }
-                myworker.postMessage(jsonResult);
+                
+                // Pour les catalogues qui ont besoin de tirets, c'est ici qu'on va les ajouter
+                if (config.DASHES == 1)
+                {
+                  addDashes(jsonResult, myworker);  
+                }
+                else
+                {
+                  myworker.postMessage(jsonResult);                  
+                }
                 return;
               }
             }).get();
@@ -189,27 +198,6 @@ function getdispo(msg, myworker, config)
     }
   }).get();
   }
-}
-
-function getdispo___BPLUS___(msg, myworker, tableau_images, RCR)
-{
-  var aQuery = msg["data"]["q"];
-  Request({
-    url: BASE_URL + "getdispo.php?type=" + msg["handler"] + "&q=" + aQuery,
-    onComplete: function (response) {
-        var jsonResult = new Array();
-        if (response.json)
-        {
-            jsonResult = response.json;
-        }
-        else
-        {
-            jsonResult.data.dispo = 2
-        }
-        jsonResult.img = tableau_images;
-        myworker.postMessage(jsonResult);
-    }
-  }).get();
 }
 
 function nb_res(msg, myworker, tableau_images)
@@ -288,4 +276,29 @@ function ISBN13toISBN10(isbn13) {
     }
      
     return start + checkDig;
+}
+
+function addDashes(jsonResult, myWorker)
+{
+  var isbn = jsonResult.data.isbn;
+  
+  var url = "http://xisbn.worldcat.org/webservices/xid/isbn/" + isbn + "?method=hyphen&format=json";
+  res = Request({
+    url: url,
+    onComplete: function (response) {
+      if (response.json)
+      {
+        var data_out = response.json;
+        if (data_out.stat == "ok")
+        {
+          console.log("ISBN final : " + data_out.list[0].isbn[0]);
+          jsonResult.data.isbn = data_out.list[0].isbn[0];
+          myWorker.postMessage(jsonResult); 
+        }
+      }
+      
+      // Si pas de réponse, on renvoie l'élément de base
+      myWorker.postMessage(jsonResult); 
+    }
+  }).get();
 }
