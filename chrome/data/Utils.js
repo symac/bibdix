@@ -213,6 +213,7 @@ function fetchDispo(q, callback) {
             if (exports.RCR.match(rcr))
             {
               present = true;
+              ppn_present = ppn_courant;
             }
           }
         }
