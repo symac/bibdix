@@ -4,7 +4,7 @@
 
 # update_manifest.sh bx3 "Bordeaux 3 - Bibdix" "DESC" "VERSION"
 
-APP_VERSION="0.1.1"
+APP_VERSION="0.1.2"
 APP_CODE=$1
 DIR_ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   
@@ -178,6 +178,9 @@ then
     else
       echo "Fichier introuvale : "$file
     fi
+    
+    # Mise à jour de la version dans la BDD
+    curl "http://www.geobib.fr/bibdix/admin/update_version.php?app_code="$APP_CODE"&version="$APP_VERSION"&key="$SECRET_KEY
   done
 else
   echo "***** Opération effectuée mais fichiers non envoyés sur le serveur"
