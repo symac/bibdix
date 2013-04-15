@@ -161,6 +161,7 @@ function getdispo(msg, myworker, config)
                     if (config.RCR.match(rcr))
                     {
                       present = true;
+                      ppn_present = ppn_courant;
                     }
                   }
                 }
