@@ -7,6 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    
+    
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
@@ -51,8 +53,15 @@
       {
         font-size:2em;
       }
+      
+      .fancybox-buttons img
+      {
+        border:1px solid #888;
+        border-radius:10px;
+      }
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.4" media="screen" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -70,7 +79,6 @@
     </div>
 
     <div class="container">
-
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
         <p id='logos'>
@@ -80,7 +88,19 @@
         <h1>BibdiX</h1>
         <p>Extension pour Chrome & Firefox enrichissant les sites des <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Amazon, Appel du livre, Decitre, Fnac, Electre, Mollat" id='ppaux_libraires'>principaux libraires</a> en ligne avec les informations de disponibilité des ouvrages dans les bibliothèques universitaires françaises.</p>
       </div>
-
+      <div class="row" style="margin-top:0px">
+        <div class="span12">
+          <h1>Captures d'écran</h1>
+        </div>
+      </div>
+      
+      <div class="row">
+          <div class='span4'><a title="Exemple sur le site de l'Appel du Livre" class="fancybox-buttons" data-fancybox-group="button" href="img/capture_adl.png"><img src="img/capture_adl_vig.png" alt="" /></a></div>
+          <div class='span4'><a title="Exemple sur le site de Decitre avec la version Rennes 2 de BibdiX" class="fancybox-buttons" data-fancybox-group="button" href="img/capture_decitre_r2.png"><img src="img/capture_decitre_r2_vig.png" alt="" /></a></div>
+          <div class='span4'><a  title="Exemple sur le site d'Electre avec la version Bordeaux 3 de BibdiX" class="fancybox-buttons" data-fancybox-group="button" href="img/capture_electre_bx3.png"><img src="img/capture_electre_bx3_vig.png" alt="" /></a></div>
+        </div>
+    
+    
       <!-- Example row of columns -->
       <div class="row ">
         <div class="span12">
@@ -115,6 +135,20 @@
           
           <h1>Historique</h1>
           <dl>
+            <dt>0.1.3 (2013-04-17)</dt>
+            <dt>
+              <ul>
+                <li>Correction d'un bug quand une notice n'est possédée que par un établissement</li>
+              </ul>
+            </dt>
+            <dt>0.1.2 (2013-03-19)</dt>
+            <dd>
+              <ul>
+                <li>Ajout des tirets via webservice XISBN. Permet de rebondir vers les catalogues qui gèrent mal les tirets dans les ISBN (Poitiers, Reims)</li>
+                <li>Correction bugs divers</li>
+              </ul>
+            </dd>
+
             <dt>0.1.1 (2013-03-06)</dt>
             <dd>
               <ul>
@@ -122,6 +156,7 @@
               </ul>
             </dd>
             <dt>0.1 (2013-03-05)</dt>
+
             <dd>
               <ul>
                 <li>Première version diffusée</li>
@@ -132,7 +167,6 @@
           
           <h1>À faire</h1>
           <ul>
-            <li>Permettre un rebond vers les catalogues qui nécessitent la version "avec tirets" des isbn (via <a href='http://xisbn.worldcat.org/webservices/xid/isbn/9782821000162?method=hyphen&format=json'>WS OCLC</a> par exemple)</li>
             <li>Gérer les sites web qui ne fournissent pas l'ISBN en direct mais un identifiant interne (Fnac)</li>
             <li>Permettre l'installation de plusieurs versions de l'extension en parallèle</li>
           </ul>
@@ -140,7 +174,7 @@
       </div>
       <hr/>
       <footer>
-        <div><a href='http://www.sylvainmachefert.com/'>Sylvain Machefert</a> - <a href='http://twitter.com/symac'>@symac</a> - <a href='http://appicns.com/'>icones app.icns</a></div>
+        <div><a href='http://www.sylvainmachefert.com/'>Sylvain Machefert</a> - <a href='http://twitter.com/symac'>@symac</a> - <a href='http://appicns.com/'>icones app.icns</a></a></div>
       </footer>
 
     </div> <!-- /container -->
@@ -148,14 +182,37 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.9.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.fancybox.js"></script>
     <script type='text/javascript'>
     $(document).ready(function() {
       // Handler for .ready() called.
         $('#ppaux_libraires').tooltip();
+
+        $('.fancybox-buttons').fancybox({
+          openEffect  : 'none',
+          closeEffect : 'none',
+          
+          prevEffect : 'none',
+          nextEffect : 'none',
+          
+          closeBtn  : false,
+          
+          helpers : {
+            title : {
+              type : 'inside'
+            },
+            buttons	: {}
+          },
+          
+          afterLoad : function() {
+            this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
+          }
+        });
     });
     </script>
+    
     <?php
       include("../google.php");
     ?>

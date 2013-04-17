@@ -1,0 +1,14 @@
+Historique des versions
+
+2013-04-16 (0.1.3)
+- Correction d'un bug quand une notice n'est possédée que par un établissement
+
+2013-03-19 (0.1.2)
+- Ajout des tirets via webservice XISBN. Permet de rebondir vers les catalogues qui gèrent mal les tirets dans les ISBN (Poitiers, Reims)
+
+2013-03-06 (0.1.1)
+- Intégration d'une recherche sur les isbn 10 & 13
+
+2013-03-05 (0.1)
+- Première version diffusée
+- Modules Amazon, Appel du Livre, Decitre, Electre & Mollat
