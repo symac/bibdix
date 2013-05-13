@@ -4,11 +4,11 @@ var MODULES =
   "appeldulivre.fr":  Module_Appeldulivre,
   "decitre.fr":       Module_Decitre,  
   "electre.com":      Module_Electre,
-  "fnac.com":         Module_Fnac,
-  "mollat.com":       Module_Mollat
+  "mollat.com":       Module_Mollat,
+  "google.fr":        Module_GoogleBooks
 };
 
-var host = window.location.hostname;
+var host = window.location.host;
 for ( var domain in MODULES )
 {
   if ( RegExp(domain + "$").test(host) )

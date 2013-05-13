@@ -35,7 +35,8 @@ function toggleActivation() {
 exports.main = function() {
     // Avant d'activer le modificateur de page, on va vérifier que l'outil est bien actif
     var bibdixMod;
-    // tabs.open("http://www.mollat.com/livres/le-sport-guerre-xixe-xxe-siecles-9782753521261.html");
+    
+    // tabs.open("http://www.decitre.fr/livres/marseille-en-quelques-jours-9782816109054.html");
     if (!bouton_actif)
     {
       return;
@@ -72,7 +73,7 @@ exports.main = function() {
 function createPageMod()
 {
   return new PageMod({
-        include: ['*.fnac.com', '*.amazon.fr', '*.appeldulivre.fr', '*.decitre.fr', '*.electre.com', '*.mollat.com'],
+        include: ['*.amazon.fr', '*.appeldulivre.fr', '*.decitre.fr', '*.electre.com', '*.mollat.com'],
         contentScriptFile:
           [
             self.data.url('jquery-1.7.1.min.js'),
@@ -81,7 +82,6 @@ function createPageMod()
             self.data.url('modules/AppelDuLivre.js'),
             self.data.url('modules/Decitre.js'),
             self.data.url('modules/Electre.js'),
-            self.data.url('modules/Fnac.js'),
             self.data.url('modules/Mollat.js'),
             self.data.url('dispatcher.js')
           ],

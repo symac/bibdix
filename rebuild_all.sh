@@ -4,7 +4,7 @@
 
 # update_manifest.sh bx3 "Bordeaux 3 - Bibdix" "DESC" "VERSION"
 
-APP_VERSION="0.1.2"
+APP_VERSION="0.1.4"
 APP_CODE=$1
 DIR_ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   
@@ -151,7 +151,7 @@ fi
 
 ./06_firefox_update_update.sh  "$APP_CODE" "$APP_VERSION" "$FIREFOX_APP_ID"
 
-firefox_sdk_dir=/home/sylvain/Dev/addon-sdk-1.13.2
+firefox_sdk_dir=/home/sylvain/Dev/addon-sdk-1.14
 cd $firefox_sdk_dir
 source bin/activate
 cfx xpi --pkgdir=/home/sylvain/Dropbox/boulot/bibdix/firefox --update-url https://ssl2.ovh.net/~opensour/bibdix/check_for_updates.php?app_code="$APP_CODE"\&browser=firefox

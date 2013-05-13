@@ -21,8 +21,8 @@
 				"http://*.amazon.fr/*",
 				"http://*.decitre.fr/*",
 				"http://*.electre.com/*",
-				"http://*.fnac.com/*",
-				"http://*.mollat.com/*"
+				"http://*.mollat.com/*",
+				"http://*.google.fr/*"
 			],
 			"js" :
 			[
@@ -33,7 +33,7 @@
 				"data/modules/AppelDuLivre.js",
 				"data/modules/Decitre.js",
 				"data/modules/Electre.js",
-				"data/modules/Fnac.js",
+				"data/modules/GoogleBooks.js",
 				"data/modules/Mollat.js",
 				"data/Utils.js",
 				"data/Dispatcher.js"
