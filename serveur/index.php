@@ -1,83 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>BibdiX - Dissémination des bibliothèques universitaires françaises</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<?php
+  include("common/header.php");
+  include("../include/db_config.php");
+  include("../include/utils.php");
+?>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Jour', 'Installations', 'Mises à jour'],
+          <?php
+            $minimum = date('Y-m-d', strtotime('-15 days'));
+            $res = SQL("select * from bibdix_stats where jour > '$minimum' order by jour");
+            
+            $stats = array();
+            while ($row = mysql_fetch_assoc($res))
+            {
+              $jour = substr($row["jour"], 5, 5);
+              // $jour = substr($jour, 3, 2)."/".substr($jour, 0, 2);
+              $stats[$jour][$row["action"]] += $row["nb"];
+            }
+            
+            foreach ($stats as $jour => $substats)
+            {
+              if (!isset($stats[$jour]["install"]))
+              {
+                $stats[$jour]["install"] = 0;
+              }
+              if (!isset($stats[$jour]["update"]))
+              {
+                $stats[$jour]["update"] = 0;
+              }
+            }
 
+            ksort($stats);
+            foreach ($stats as $jour => $substats)
+            {
+              print "['$jour', ".$substats["install"].", ".$substats["update"]."],\n";
+            }
+          ?>
+        ]);
+
+        var options = {
+          title: 'Utilisateurs',
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
     
-    
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      
-      .extension
-      {
-        border:1px solid #CCC;
-        padding:0px 10px;
-      }
-      
-      .extension h2
-      {
-        font-size:1.5em;
-      }
-      
-      #logos
-      {
-        float:right;
-      }
-      
-      footer
-      {
-        margin:auto;
-        text-align:center;
-      }
-      
-      footer div
-      {
-        border-top:1px dashed #BBB;
-      }
-      
-      footer a
-      {
-        color:#999;
-      }
-      
-      h1
-      {
-        font-size:2em;
-      }
-      
-      .fancybox-buttons img
-      {
-        border:1px solid #888;
-        border-radius:10px;
-      }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.4" media="screen" />
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">BibdiX</a>
-        </div>
-      </div>
-    </div>
-
     <div class="container">
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
@@ -108,22 +81,30 @@
           <table class='table'>
             <tr>
               <th>Établissement</th>
-              <th>Chrome</th>
-              <th>Firefox<br/>(13.0 et +)</th>
+              <th class="class_center">Chrome<br/><a href="#myModal" style='font-weight:normal; color:red' role="button" data-toggle="modal">[note sur l'installation]</a></th>
+              <th class="class_center">Firefox<br/>(13.0 et +)</th>
+              <th class="class_center">Utilisateurs</th>
             </tr>
             <?php
-            
-              include("../include/db_config.php");
-              include("../include/utils.php");
-              
               $res = SQL("select * from bibdix_versions where actif = 1 order by etab");
               while ($row = mysql_fetch_assoc($res))
               {
-                print "<tr>";
-                print "<td>[<a href='detail.php?id=".$row["id"]."'>?</a>] ".$row["etab"]."</td>";
-                print "<td><a href='".build_dl_link("chrome", $row["version"], $row["code"])."'>installer</a></td>";
-                print "<td><a href='".build_dl_link("firefox", $row["version"] , $row["code"])."'>installer</a></td>";
-                print "<tr>";
+                print "<tr>\n";
+                print "<td>[<a href='detail.php?id=".$row["id"]."'>?</a>] ".$row["etab"]."</td>\n";
+                print "<td class='class_center'><a href='".build_dl_link("chrome", $row["version"], $row["code"])."'>installer</a></td>\n";
+                print "<td class='class_center'><a href='".build_dl_link("firefox", $row["version"] , $row["code"])."'>installer</a></td>\n";
+
+                // On va regarder le maximum sur la dernière semaine
+                $minimum = date('Y-m-d', strtotime('-4 days'));
+                $resB = SQL("select max(nb) as max from bibdix_stats where app_code = '".$row["code"]."' and action = 'update' and jour > '".$minimum."'");
+                $rowB = mysql_fetch_assoc($resB);
+                $max = $rowB["max"];
+                if ($max == "")
+                {
+                  $max = 0;
+                }
+                print "<td class='class_center'>~ ".$max."</td>";
+                print "<tr>\n";
               }
               
               function build_dl_link($browser, $version, $app_code)
@@ -132,15 +113,16 @@
               }
             ?>
           </table>
-          
+          <h1>Statistiques</h1>
+          <div id="chart_div" style='height:300px'></div>
           <h1>Historique</h1>
           <dl>
             <dt>0.1.3 (2013-04-17)</dt>
-            <dt>
+            <dd>
               <ul>
                 <li>Correction d'un bug quand une notice n'est possédée que par un établissement</li>
               </ul>
-            </dt>
+            </dd>
             <dt>0.1.2 (2013-03-19)</dt>
             <dd>
               <ul>
@@ -169,6 +151,7 @@
           <ul>
             <li>Gérer les sites web qui ne fournissent pas l'ISBN en direct mais un identifiant interne (Fnac)</li>
             <li>Permettre l'installation de plusieurs versions de l'extension en parallèle</li>
+            <li>Autoriser la récupération des dispos en direct depuis un OPAC plutôt que via web services ABES pour permettre une meilleure réactivité (en particulier pour voir dans les disponibles les ouvrages en commande par exemple)</li>
           </ul>
         </div>
       </div>
@@ -179,42 +162,29 @@
 
     </div> <!-- /container -->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.fancybox.js"></script>
-    <script type='text/javascript'>
-    $(document).ready(function() {
-      // Handler for .ready() called.
-        $('#ppaux_libraires').tooltip();
-
-        $('.fancybox-buttons').fancybox({
-          openEffect  : 'none',
-          closeEffect : 'none',
-          
-          prevEffect : 'none',
-          nextEffect : 'none',
-          
-          closeBtn  : false,
-          
-          helpers : {
-            title : {
-              type : 'inside'
-            },
-            buttons	: {}
-          },
-          
-          afterLoad : function() {
-            this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
-          }
-        });
-    });
-    </script>
+    <!-- Modal -->
+    <div id="myModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Installation Chrome</h3>
+    </div>
+    <div class="modal-body">
+    <p>Pour des raisons de sécurité, Chrome n'autorise plus l'installation simplifiée d'extensions depuis d'autres sites que le <span style="font-style:italic">Chrome Web Store</span>.</p>
+    <p>Pour installer BibdiX sur Chrome, la procédure à suivre est donc la suivante :
+    <ol>
+      <li>Téléchargez le fichier de l'extension depuis le site Web et enregistrez-le sur votre ordinateur.</li>
+      <li>Cliquez sur l'icône représentant une clé à molette dans la barre d'outils du navigateur.</li>
+      <li>Sélectionnez Outils > Extensions.</li>
+      <li>Localisez le fichier de l'extension sur votre ordinateur et faites-le glisser vers la page "Extensions".</li>
+      <li>Examinez la liste des autorisations dans la boîte de dialogue qui s'affiche. Si vous souhaitez continuer, cliquez sur Installer.</li>
+    </ol><small>(<a href='https://support.google.com/chrome_webstore/answer/2664769?p=crx_warning&rd=1'>source sur le site de google</a>)</small></p>
+    </div>
+    <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+    </div>
+    </div>
     
-    <?php
-      include("../google.php");
-    ?>
-  </body>
-</html>
+    
+<?php
+  include("common/footer.php");
+?>
