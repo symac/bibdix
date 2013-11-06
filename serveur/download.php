@@ -11,7 +11,23 @@
     print "Manque un paramètre";
     exit;
   }
-    
+  
+  if ($version == "latest")
+  {
+    // On doit aller dans la base chercher le code de la dernière version
+    $res = SQL("select * from bibdix_versions where code = '$app_code'");
+    if (mysql_numrows($res) != 1)
+    {
+      print "Erreur dans le téléchargement, merci d'envoyer un mail à smachefert <à> gmail.com";
+      die;
+    }
+    else
+    {
+      $row = mysql_fetch_assoc($res);
+      $version = $row["version"];
+    }
+  }
+  
   $filename = "versions/".$app_code."/bibdix_".$browser."_".$app_code."_".$version;
   if( $browser == "firefox")
   {
@@ -35,6 +51,8 @@
   
   // On va stocker les informations
   $ip = $_SERVER["REMOTE_ADDR"];
-  SQL("insert into bibdix_log (`app_code`, `app_nav`, `action`, `ip`) values ('$app_code', '$browser', 'install', '$ip')");
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+  
+  SQL("insert into bibdix_log (`app_code`, `user_agent`, `app_nav`, `action`, `ip`) values ('$app_code', '".addslashes($user_agent)."','$browser', 'install', '$ip')");
   header("Location: $filename");
 ?>
