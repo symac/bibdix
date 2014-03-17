@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<?php
+  include("../include/db_config.php");
+  include("../include/utils.php");
+  $id = $_GET["id"];
+  $res = SQL("select * from bibdix_versions where id = $id");
+  $row = mysql_fetch_assoc($res);
+  $code = $row["code"];
+  $app_version = $row["version"];
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -7,6 +16,54 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Jour', 'Installations', 'Mises à jour'],
+          <?php
+            $minimum = date('Y-m-d', strtotime('-15 days'));
+            $res = SQL("select * from bibdix_stats where app_code = '$code' and jour > '$minimum' order by jour");
+            
+            $stats = array();
+            while ($row = mysql_fetch_assoc($res))
+            {
+              $jour = substr($row["jour"], 5, 5);
+              $stats[$jour][$row["action"]] = $row["nb"];
+            }
+            
+            foreach ($stats as $jour => $substats)
+            {
+              if (!isset($stats[$jour]["install"]))
+              {
+                $stats[$jour]["install"] = 0;
+              }
+              if (!isset($stats[$jour]["update"]))
+              {
+                $stats[$jour]["update"] = 0;
+              }
+            }
+
+            asort($stats);
+            foreach ($stats as $jour => $substats)
+            {
+              print "['$jour', ".$substats["install"].", ".$substats["update"]."],\n";
+            }
+          ?>
+        ]);
+
+        var options = {
+          title: 'Utilisateurs',
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    
+    
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
@@ -75,16 +132,19 @@
         <div class="span6 offset3">
           <table class='table'>
             <?php
-              include("../include/db_config.php");
-              include("../include/utils.php");
-              
-              $id = $_GET["id"];
-              $res = SQL("select * from bibdix_versions where id = $id");
-              $row = mysql_fetch_assoc($res);
-              $code = $row["code"];
-              
+             
               afficheLigne("nom", "Nom extension");
               afficheLigne("etab", "Établissement");
+              
+              print "<tr><th>Installer</th>";
+              print "<td>";
+              print "<ul><li><a href='".build_dl_link("chrome", $app_version, $code)."'>Sous Chrome</a></li>";
+              print "<li><a href='".build_dl_link("firefox", $app_version, $code)."'>Sous Firefox</a></li></ul>";
+              print "</td></tr>";
+              function build_dl_link($browser, $version, $app_code)
+              {
+                return "download.php?browser=$browser&app_code=$app_code&version=$version";
+              }
               print "<tr><th>Icônes</th>";
               print "<td>";
               print "<img class='img_ext' src='versions/".$code."/img/icon.png'/>";
@@ -93,6 +153,14 @@
               print "<img class='img_ext' src='versions/".$code."/img/inconnu.png'/>";
               print "</td>";
               print "</tr>";
+            ?>
+              <tr>
+                <td colspan='2'>
+                  <span style='font-weight:bold'>Statistiques</span>
+                  <div id="chart_div"/>
+                </td>
+              </tr>
+            <?php
               afficheLigne("rcr", "Bibliothèques");
               
               function afficheLigne($code, $lib)
