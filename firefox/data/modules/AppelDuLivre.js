@@ -43,8 +43,8 @@ var Module_Appeldulivre = {
     $("p.unetexte").each(function(i)
     {
         var url = $("a",this).attr('href');
-        var pattern = new RegExp(".*&CODEAN=([0-9]{13}).*");
-        var isbn = url.replace(pattern, "$1");
+        var pattern = new RegExp(".*(&CODEAN=|/REF_PAPIER/)([0-9]{13}).*");
+        var isbn = url.replace(pattern, "$2");
          
       if (!isbn)
       {
@@ -52,6 +52,7 @@ var Module_Appeldulivre = {
       }
       
       var insertionPoint = $(this).get(0);
+      console.log("RECH ISBN : #" + isbn + "#");
       insertionPoint && checkBookAvailability("isbn:" + isbn, insertionPoint);
     });
   },
