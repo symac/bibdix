@@ -16,14 +16,17 @@ if (!storage.bibdix_active)
 {
   storage.bibdix_active = "actif";
   bouton_actif = true;
+  console.log("LOAD A");
 }
 else if (storage.bibdix_active == "actif")
 {
   bouton_actif = true;
+  console.log("LOAD B");
 }
 else if (storage.bibdix_active == "inactif")
 {
   bouton_actif = false;
+  console.log("LOAD C");
 }
 
 function toggleActivation() {
@@ -39,17 +42,18 @@ exports.main = function() {
     // tabs.open("http://www.decitre.fr/livres/marseille-en-quelques-jours-9782816109054.html");
     if (!bouton_actif)
     {
-      return;
+      bouton_depart = config.IMG.inactif;
     }
     else
     {
+      bouton_depart = config.IMG.actif;
       bibdixMod = createPageMod();
     }
 
     var widget = widgets.Widget({
       id: 'toggle-switch',
       label: config.LIB.extension_toolbar,
-      contentURL: config.IMG.actif,
+      contentURL: bouton_depart,
       contentScriptWhen: 'ready',
       contentScriptFile: self.data.url('widget.js')
     });
@@ -57,12 +61,14 @@ exports.main = function() {
     widget.port.on('left-click', function() {
       if (toggleActivation())
       {
+        console.log("TOGGLE A");
         widget.contentURL = config.IMG.actif;
         // On active, on doit donc créer un nouveau pagemod
         bibdixMod = createPageMod();
       }
       else
       {
+        console.log("TOGGLE B");
         widget.contentURL = config.IMG.inactif;
         // On désactive, on détruit donc le pagemod devenu inutile
         bibdixMod.destroy();
