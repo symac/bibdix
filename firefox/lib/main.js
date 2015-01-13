@@ -1,11 +1,11 @@
 // This is an active module of the symac Add-on
-const PageMod   = require('page-mod').PageMod;
-const tabs      = require('tabs');
-const self      = require('self');
-const storage   = require('simple-storage').storage;
-const widgets   = require('widget');
+const PageMod   = require('sdk/page-mod').PageMod;
+const tabs      = require('sdk/tabs');
+const self      = require('sdk/self');
+const storage   = require('sdk/simple-storage').storage;
+const widgets   = require('sdk/widget');
 const req_serveur = require("req_serveur");
-var contextMenu = require("context-menu");
+var contextMenu = require("sdk/context-menu");
 var config      = require("config");
 
 const QUERY_MODE_MULTIPLE = true;
@@ -73,7 +73,7 @@ exports.main = function() {
 function createPageMod()
 {
   return new PageMod({
-        include: ['*.amazon.fr', '*.appeldulivre.fr', '*.decitre.fr', '*.electre.com', '*.mollat.com'],
+        include: ['*.amazon.fr', '*.appeldulivre.fr', '*.appeldulivre.com', '*.decitre.fr', '*.electre.com', '*.mollat.com'],
         contentScriptFile:
           [
             self.data.url('jquery-1.7.1.min.js'),

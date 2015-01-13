@@ -16,11 +16,12 @@
     }
     
   });
-  
+
   var MODULES =
   {
     "amazon.fr":        Module_Amazon,
     "appeldulivre.fr":  Module_Appeldulivre,
+    "appeldulivre.com":  Module_Appeldulivre,    
     "decitre.fr":       Module_Decitre,  
     "electre.com":      Module_Electre,
     "mollat.com":       Module_Mollat
