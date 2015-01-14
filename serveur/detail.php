@@ -178,16 +178,18 @@
                   foreach ($tab_rcr as $rcr)
                   {
                     $res2 = SQL("select * from bibdix_rcr where rcr='$rcr'");
-                    
+                   
+                    print "<a href='http://www.sudoc.abes.fr//DB=2.2/CMD?ACT=SRCHA&IKT=8888&SRT=RLV&TRM=$rcr'><li>";
                     if (mysql_num_rows($res2) != 1)
                     {
-                      print "<li>$rcr</li>";
+                      print "$rcr";
                     }
                     else
                     {
                       $row2 = mysql_fetch_assoc($res2);
-                      print "<li>".$row2["lib"]."</li>";
+                      print $row2["lib"];
                     }
+                    print "</a></li>\n";
                   }
                   print "</ul></td>";
                 }
