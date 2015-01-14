@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-  include("../include/db_config.php");
-  include("../include/utils.php");
+  include("../../include/all_includes.php");
   $id = $_GET["id"];
   $res = SQL("select * from bibdix_versions where id = $id");
   $row = mysql_fetch_assoc($res);
@@ -46,7 +45,7 @@
               }
             }
 
-            asort($stats);
+            ksort($stats);
             foreach ($stats as $jour => $substats)
             {
               print "['$jour', ".$substats["install"].", ".$substats["update"]."],\n";
@@ -174,7 +173,7 @@
                 
                 if ($code == "rcr")
                 {
-                  $tab_rcr = split(",", $row[$code]);
+                  $tab_rcr = preg_split("/,/", $row[$code]);
                   print "<td><ul>";
                   foreach ($tab_rcr as $rcr)
                   {
