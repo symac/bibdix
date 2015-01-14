@@ -55,7 +55,7 @@ var Module_Amazon = {
     if (!isbn) {debug("ret");
       return;
     }
-    var insertionPoint = $("form#handleBuy").get(0);
+    var insertionPoint = $("div#formats").get(0);
     insertionPoint && checkBookAvailability("isbn:" + isbn, insertionPoint);
   },
 
