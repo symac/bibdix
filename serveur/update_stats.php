@@ -1,10 +1,21 @@
 <?php
   include("include/log.php");
-  include("../include/db_config.php");
-  include("../include/utils.php");
+  require_once("../../include/all_includes.php");
   
   
   // On va aller chercher les téléchargements
+  SQL("delete from bibdix_log where user_agent like '%Googlebot%'");
+  SQL("delete from bibdix_log where user_agent like 'BUbiNG%'");
+  SQL("delete from bibdix_log where user_agent like '%phpcrawl%'");
+  SQL("delete from bibdix_log where user_agent like '%bnf.fr_bot%'");
+  SQL("delete from bibdix_log where user_agent like '%Exabot%'");
+  SQL("delete from bibdix_log where user_agent like '%Robot%'");
+  SQL("delete from bibdix_log where user_agent like 'Java/1.%'"); // Controle Amethys
+  SQL("delete from bibdix_log where user_agent like 'Ametys%'"); // Controle Amethys
+  SQL("delete from bibdix_log where user_agent like '%bot%'");
+  SQL("delete from bibdix_log where user_agent like '%slurp%'");
+  SQL("delete from bibdix_log where user_agent like '%Lipperhey SEO Service%'");
+
 
   $all = getParam("all");
   if ($all == 1)
