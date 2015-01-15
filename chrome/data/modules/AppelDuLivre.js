@@ -44,7 +44,7 @@ var Module_Appeldulivre = {
     {
         var url = $("a",this).attr('href');
         var pattern = new RegExp(".*(&CODEAN=|/REF_PAPIER/)([0-9]{13}).*");
-        var isbn = url.replace(pattern, "$1");
+        var isbn = url.replace(pattern, "$2");
          
       if (!isbn)
       {
