@@ -1,7 +1,7 @@
 // config.js - Bibeverywhere's module
 // author: Sylvain Machefert (Bordeaux 3)
 
-var data = require("self").data;
+var data = require("sdk/self").data;
 exports.IMG = {};
 exports.LIB = {};
 exports.URL_REBOND = {};

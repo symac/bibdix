@@ -1,7 +1,6 @@
 var dispos_tmp = {};
 
 var BASE_URL = "http://www.geobib.fr/babordplus";
-var SEARCH_SERVICE_URL = BASE_URL + "/search.php";
 
 var QUERY_MODE_MULTIPLE = false;
 var registry = {};
@@ -121,7 +120,7 @@ function showBookAvailability_onStart(aInsertionPoint, aQuery) {
         {
             style: "width:32px; height:32px", 
             class: "search-start",
-            src: BASE_URL + "/img/searching.gif",
+            src: "http://geobib.fr/bibdix/img/searching.gif",
             title: "Interrogation en cours",
             alt: "Interrogation en cours"
         });

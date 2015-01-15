@@ -4,7 +4,7 @@
 
 # update_manifest.sh bx3 "Bordeaux 3 - Bibdix" "DESC" "VERSION"
 
-APP_VERSION="0.1.4"
+APP_VERSION="0.1.5"
 APP_CODE=$1
 DIR_ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   
@@ -103,8 +103,7 @@ then
     tr '0-9a-f' 'a-p')
 
     # On va mettre à jour le chrome_id sur le serveur pour le récupérer plus tard
-
-    wget --quiet http://www.geobib.fr/bibdix/admin/update_keys?app_code="$APP_CODE"\&app_chrome_id="$CHROME_APP_ID"
+    wget http://www.geobib.fr/bibdix/admin/update_keys?app_code="$APP_CODE"\&app_chrome_id="$CHROME_APP_ID"
 else
     if [ -e chrome.pem ]
     then
@@ -151,13 +150,13 @@ fi
 
 ./06_firefox_update_update.sh  "$APP_CODE" "$APP_VERSION" "$FIREFOX_APP_ID"
 
-firefox_sdk_dir=/home/sylvain/Dev/addon-sdk-1.14
+firefox_sdk_dir=/home/smachefert/Documents/bibdix/addon-sdk-1.17
 cd $firefox_sdk_dir
 source bin/activate
-cfx xpi --pkgdir=/home/sylvain/Dropbox/boulot/bibdix/firefox --update-url https://ssl2.ovh.net/~opensour/bibdix/check_for_updates.php?app_code="$APP_CODE"\&browser=firefox
+cfx xpi --pkgdir=/home/smachefert/Dropbox/boulot/bibdix/firefox --update-url https://ssl2.ovh.net/~opensour/bibdix/check_for_updates.php?app_code="$APP_CODE"\&browser=firefox
 
-mv "$firefox_sdk_dir"/bibdix-"$APP_CODE".xpi /home/sylvain/Dropbox/boulot/bibdix/versions/"$APP_CODE"/bibdix_firefox_"$APP_CODE"_"$APP_VERSION".xpi
-cd /home/sylvain/Dropbox/boulot/bibdix/versions/"$APP_CODE"/
+mv "$firefox_sdk_dir"/bibdix-"$APP_CODE".xpi /home/smachefert/Dropbox/boulot/bibdix/versions/"$APP_CODE"/bibdix_firefox_"$APP_CODE"_"$APP_VERSION".xpi
+cd /home/smachefert/Dropbox/boulot/bibdix/versions/"$APP_CODE"/
 # On va extraire le install.rdf
 unzip bibdix_firefox_"$APP_CODE"_"$APP_VERSION".xpi install.rdf
 sed -i "s/<em:minVersion>.*/<em:minVersion>2.9.*<\/em:minVersion>/g" install.rdf
@@ -185,3 +184,7 @@ then
 else
   echo "***** Opération effectuée mais fichiers non envoyés sur le serveur"
 fi
+echo "############ OPÉRATION TERMINÉE ############"
+echo ""
+echo ""
+echo ""
