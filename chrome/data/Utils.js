@@ -74,35 +74,40 @@ function fetchDispo(q, callback) {
   var isbn = "";
   var equiv_PPN_ISBN = new Object();
   
-  
   xhr1.onreadystatechange = function(data) {
     if (xhr1.readyState == 4) {
+      var ppn_list = "0";
       if (xhr1.status == 200) {
         var data_out = JSON.parse(xhr1.responseText);
         // On a récupéré la liste des PPN, on va aller regarder s'ils sont chez nous
         // var tab_ppn = new Object();
-        var ppn_list = "";
-        
-        
         if (data_out.sudoc.length > 0)
         {
           for (var i=0; i < data_out.sudoc.length; i++)
           {
-            var isbn_courant = data_out.sudoc[i].query.isbn;
-            if (data_out.sudoc[i].query.result.length > 0)
+            if (!data_out.sudoc[i].query.resultNoHolding)
             {
-              for (var j=0; j < data_out.sudoc[i].query.result.length; j++)
+              var isbn_courant = data_out.sudoc[i].query.isbn;
+              
+              if (data_out.sudoc[i].query.result.length > 0)
               {
-                var ppn = data_out.sudoc[i].query.result[j].ppn;
+                for (var j=0; j < data_out.sudoc[i].query.result.length; j++)
+                {
+                  // On aura au moins un PPN ok, on peut supprimer la chaîne "0" initiale
+                  ppn_list = ppn_list.replace(/^0$/, "");
+                  var ppn = data_out.sudoc[i].query.result[j].ppn;
+                  ppn_list = ppn_list + ppn + ",";
+                  equiv_PPN_ISBN[ppn] = isbn_courant;
+                }
+              }
+              else
+              {
+                // On aura au moins un PPN ok, on peut supprimer la chaîne "0" initiale
+                ppn_list = ppn_list.replace(/^0$/, "");
+                var ppn = data_out.sudoc[i].query.result.ppn;
                 ppn_list = ppn_list + ppn + ",";
                 equiv_PPN_ISBN[ppn] = isbn_courant;
               }
-            }
-            else
-            {
-              var ppn = data_out.sudoc[i].query.result.ppn;
-              ppn_list = ppn_list + ppn + ",";
-              equiv_PPN_ISBN[ppn] = isbn_courant;
             }
           }
         }
@@ -127,15 +132,18 @@ function fetchDispo(q, callback) {
         }
        
         ppn_list = ppn_list.replace(/,$/, "");
-        if (ppn_list != "")
+        if ( (ppn_list != "0") && (ppn_list != "") )
         {
           // On a au moins un PPN, on va donc aller demander si dispo dans nos RCR
           var url = "http://www.sudoc.fr/services/multiwhere/" + ppn_list + "&format=text/json";
           xhr2.open('GET', url, true);
           xhr2.send();
+          return;
         }
         // callback(data_out);
-      } else if (xhr1.status == 404)
+      } 
+
+      if ( (xhr1.status == 404) || (ppn_list == "0") )
       {
         // On n'a pas de résultats dans le sudoc ==> Affichage KO
 
@@ -168,7 +176,6 @@ function fetchDispo(q, callback) {
           for (var i=0; i < data_out.sudoc.query.length; i++)
           {
             ppn_courant = data_out.sudoc.query[i].ppn;
-            console.log("PPN COURANT : " + ppn_courant);
             if (data_out.sudoc.query[i].result.library.length > 0)
             {
               for (var j=0; j < data_out.sudoc.query[i].result.library.length; j++)
