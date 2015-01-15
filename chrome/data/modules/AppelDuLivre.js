@@ -43,7 +43,7 @@ var Module_Appeldulivre = {
     $("p.unetexte").each(function(i)
     {
         var url = $("a",this).attr('href');
-        var pattern = new RegExp(".*&CODEAN=([0-9]{13}).*");
+        var pattern = new RegExp(".*(&CODEAN=|/REF_PAPIER/)([0-9]{13}).*");
         var isbn = url.replace(pattern, "$1");
          
       if (!isbn)
@@ -83,7 +83,7 @@ var Module_Appeldulivre = {
         console.log("Pas d'ISBN sur cette page");
         return true;
     }
-    
+
     var insertionPoint = $("p.unetexte > span.grisfonce").get(0);
     insertionPoint && checkBookAvailability("isbn:" + isbn, insertionPoint);    
   }
