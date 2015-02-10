@@ -4,7 +4,7 @@
 
 # update_manifest.sh bx3 "Bordeaux 3 - Bibdix" "DESC" "VERSION"
 
-APP_VERSION="0.1.5"
+APP_VERSION="0.1.6"
 APP_CODE=$1
 DIR_ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   
