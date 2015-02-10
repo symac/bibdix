@@ -4,6 +4,7 @@
   Fonction  : Analyse des pages de Decitre.
   
   Historique :
+    - 20150210 : évolutions site web Decitre
     - 20130222 : modifications j. sicot (Rennes 2)
     - 20121024 : adaptation à nouvelle version du site
     - 20111005 : version initiale du script
@@ -41,7 +42,7 @@ var Module_Decitre = {
   _processProduct: function() {
     // Version non active au 24/10/2012 :
     // var isbn = $("div#nomean").text();
-    var isbn = $(".technic ul li:contains('ISBN') em").text().trim();
+    var isbn = $("#fiche-technique").find("span[itemprop=productID]").text().trim();
     if (!isbn)
     {
         // TODO : logguer les erreurs pour contrôler un peu mieux
@@ -51,7 +52,7 @@ var Module_Decitre = {
     isbn = isbn.replace(":", "");
     isbn = isbn.replace(/^\s*/, '').replace(/\s*$/, '');
     console.log("ISBN : #" + isbn + "#");
-    var insertionPoint = $("div.rate").get(0);
+    var insertionPoint = $("div.product-information").get(0);
     insertionPoint && checkBookAvailability("isbn:" + isbn, insertionPoint);    
   }
 };

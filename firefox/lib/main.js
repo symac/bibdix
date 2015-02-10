@@ -16,17 +16,14 @@ if (!storage.bibdix_active)
 {
   storage.bibdix_active = "actif";
   bouton_actif = true;
-  console.log("LOAD A");
 }
 else if (storage.bibdix_active == "actif")
 {
   bouton_actif = true;
-  console.log("LOAD B");
 }
 else if (storage.bibdix_active == "inactif")
 {
   bouton_actif = false;
-  console.log("LOAD C");
 }
 
 function toggleActivation() {
