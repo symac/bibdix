@@ -257,6 +257,7 @@ function fetchDispo(q, callback) {
   else
   {
     isbn = q.replace("isbn:", "");
+    isbn = isbn.replace(/-/g, "");
     isbn2 = getOtherISBN(isbn);
     
     var url = "http://www.sudoc.fr/services/isbn2ppn/" + isbn;
@@ -265,6 +266,7 @@ function fetchDispo(q, callback) {
       url += "," + isbn2;
     }
     url += "&format=text/json";
+    console.log("XHR1 : " + url);
     xhr1.open('GET', url, true);
     xhr1.send();
   }
